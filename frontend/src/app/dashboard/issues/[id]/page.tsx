@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { authHeaders } from '@/lib/api';
+import { authHeaders, getUserId } from '@/lib/api';
 
 interface Issue {
   issueId: string;
@@ -13,8 +13,8 @@ interface Issue {
   problemDescription: string;
   currentState: string;
   severityLevel: string;
-  reportingUserId: string;
-  assignedToUserId: string | null;
+  reporterName: string;
+  assignedToName: string | null;
   createdAt: string;
   lastModifiedAt: string;
   concurrencyVersion: number;
@@ -22,7 +22,7 @@ interface Issue {
 
 interface Message {
   msgId: string;
-  authorUserId: string;
+  authorName: string;
   messageText: string;
   postedAt: string;
   parentMsgId: string | null;
@@ -47,6 +47,7 @@ export default function IssueDetailPage() {
   const [submittingComment, setSubmittingComment] = useState(false);
   const [changingState, setChangingState] = useState(false);
   const [selectedState, setSelectedState] = useState('');
+  const [assigning, setAssigning] = useState(false);
 
   useEffect(() => {
     fetchIssue();
@@ -103,6 +104,36 @@ export default function IssueDetailPage() {
       toast.error(error.message || 'Failed to update state');
     } finally {
       setChangingState(false);
+    }
+  };
+
+  const handleAssignToMe = async () => {
+    if (!issue) return;
+
+    setAssigning(true);
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/issues/${issueId}`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify({
+          subjectLine: issue.subjectLine,
+          problemDescription: issue.problemDescription,
+          severityLevel: issue.severityLevel,
+          assignedToUserId: Number(getUserId()),
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        throw new Error(error?.message || 'Failed to assign issue');
+      }
+
+      toast.success('Issue assigned to you');
+      fetchIssue();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to assign issue');
+    } finally {
+      setAssigning(false);
     }
   };
 
@@ -227,13 +258,22 @@ export default function IssueDetailPage() {
           </div>
           <div>
             <span className="text-gray-500">Reporter:</span>
-            <span className="ml-2 text-gray-900">User #{issue.reportingUserId}</span>
+            <span className="ml-2 text-gray-900">{issue.reporterName}</span>
           </div>
           <div>
             <span className="text-gray-500">Assigned To:</span>
             <span className="ml-2 text-gray-900">
-              {issue.assignedToUserId ? `User #${issue.assignedToUserId}` : 'Unassigned'}
+              {issue.assignedToName || 'Unassigned'}
             </span>
+            {!issue.assignedToName && (
+              <button
+                onClick={handleAssignToMe}
+                disabled={assigning}
+                className="ml-3 text-xs font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50"
+              >
+                {assigning ? 'Assigning...' : '+ Assign to me'}
+              </button>
+            )}
           </div>
         </div>
 
@@ -300,7 +340,7 @@ export default function IssueDetailPage() {
               <div key={message.msgId} className="border-l-4 border-blue-200 pl-4 py-2">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-semibold text-gray-900 text-sm">
-                    User #{message.authorUserId}
+                    {message.authorName}
                   </span>
                   <span className="text-xs text-gray-400">
                     {formatDate(message.postedAt)}

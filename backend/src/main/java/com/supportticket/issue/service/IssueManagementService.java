@@ -117,6 +117,14 @@ public class IssueManagementService {
       );
     }
 
+    // An issue must have an assignee before it can be closed (enforced at the DB
+    // level too, via a CHECK constraint - validated here first for a clear message).
+    if (targetState == IssueState.CLOSURE && issue.getAssignedToUser() == null) {
+      throw new IllegalStateException(
+          "Cannot close an unassigned issue. Assign it to someone first."
+      );
+    }
+
     // Record the state change
     StateChangeLog changeLog = new StateChangeLog();
     changeLog.setIssue(issue);
