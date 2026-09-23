@@ -244,7 +244,38 @@ edit-rebuild-restart cycles.
 
 ---
 
-## 10. Dead/hardcoded UI left in a "working" app
+## 10. In-memory ticket-key counter, reset by every restart
+
+**What happened:** `generateIssueKey()` built ticket keys (`ISS-1001`,
+`ISS-1002`, ...) from a `private static final AtomicLong
+issueKeyCounter = new AtomicLong(1000)`. That field re-initializes to
+`1000` every time the JVM starts. The database, meanwhile, keeps every
+`issue_key` ever created across all previous runs, and the column has a
+`UNIQUE` constraint.
+
+**Impact:** After enough backend restarts within one session (this
+project restarted the backend a lot, chasing other fixes), the counter
+inevitably regenerated a key — `ISS-1001` — that already existed from a
+prior run. The very next "create issue" hit a unique-constraint
+violation and surfaced as a generic, unhelpful "This operation violates
+a data constraint and cannot be completed" — the `DataIntegrityViolationException`
+safety-net message added for mistake #4 correctly caught the crash and
+kept it off the user's screen as a raw 500, but a generic safety net
+can't explain *why* a specific constraint fired, only that one did.
+
+**Fix:** The counter is now seeded from the database at construction
+time (`1000 + issueRepository.count()`) instead of a fixed literal, so
+each restart continues numbering from where the data actually left off.
+
+**Lesson:** An in-memory counter is not a substitute for a
+database-backed sequence when the thing it's numbering is itself
+persistent — any state that's supposed to survive a restart needs to
+actually be read back from what's durable (the database), not
+re-initialized to a constant and hoped to stay in sync.
+
+---
+
+## 11. Dead/hardcoded UI left in a "working" app
 
 Several UI elements were shipped non-functional and only caught because
 the user clicked them:

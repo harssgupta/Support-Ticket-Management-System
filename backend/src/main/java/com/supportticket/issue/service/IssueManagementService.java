@@ -22,7 +22,7 @@ public class IssueManagementService {
 
   private final IssueRepository issueRepository;
   private final StateChangeLogRepository stateChangeLogRepository;
-  private static final AtomicLong issueKeyCounter = new AtomicLong(1000);
+  private final AtomicLong issueKeyCounter;
 
   public IssueManagementService(
       IssueRepository issueRepository,
@@ -30,6 +30,11 @@ public class IssueManagementService {
   ) {
     this.issueRepository = issueRepository;
     this.stateChangeLogRepository = stateChangeLogRepository;
+    // Seed from the current row count rather than a fixed literal - a
+    // static counter starting at the same value on every JVM restart
+    // collides with issue_key values already persisted from before the
+    // restart, violating the UNIQUE constraint on the very next create.
+    this.issueKeyCounter = new AtomicLong(1000 + issueRepository.count());
   }
 
   /**
