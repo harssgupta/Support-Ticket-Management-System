@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -10,14 +10,38 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [userName, setUserName] = useState('User');
+  const [userRole, setUserRole] = useState('');
   const router = useRouter();
   const pathname = usePathname();
 
+  useEffect(() => {
+    setUserName(localStorage.getItem('user_name') || 'User');
+    setUserRole((localStorage.getItem('user_role') || '').replace(/_/g, ' '));
+  }, []);
+
   const handleLogout = async () => {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('user_login');
+    localStorage.removeItem('user_role');
     router.push('/login');
     router.refresh();
   };
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      router.push(`/dashboard/issues?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const initials = userName
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: '📊' },
@@ -72,12 +96,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="p-4 border-t border-gray-700 space-y-3">
           <div className={`flex items-center ${!sidebarOpen && 'justify-center'}`}>
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-sm font-bold">JD</span>
+              <span className="text-sm font-bold">{initials}</span>
             </div>
             {sidebarOpen && (
               <div className="ml-3">
-                <p className="text-sm font-medium">John Doe</p>
-                <p className="text-xs text-gray-400">Admin</p>
+                <p className="text-sm font-medium">{userName}</p>
+                <p className="text-xs text-gray-400">{userRole}</p>
               </div>
             )}
           </div>
@@ -109,16 +133,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="relative hidden md:block">
               <input
                 type="text"
-                placeholder="Search issues..."
-                className="pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleSearch}
+                placeholder="Search issues... (press Enter)"
+                className="pl-4 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm w-56"
               />
             </div>
-            <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-              🔔
-            </button>
-            <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+            <Link
+              href="/dashboard/settings"
+              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
               ⚙️
-            </button>
+            </Link>
           </div>
         </header>
 

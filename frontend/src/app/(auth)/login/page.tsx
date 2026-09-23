@@ -162,26 +162,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <p className="text-xs font-semibold text-gray-700 mb-3">📋 Demo Credentials</p>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-600">Username:</span>
-                  <code className="bg-white px-2 py-1 rounded text-gray-900 font-mono">john</code>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-gray-600">Password:</span>
-                  <code className="bg-white px-2 py-1 rounded text-gray-900 font-mono">password123</code>
-                </div>
-                <div className="pt-2 border-t border-blue-100 mt-2">
-                  <p className="text-xs text-gray-600">Alt: jane / password123</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Footer */}
           <p className="text-xs text-gray-500 text-center mt-6">
             Secure ticket management system

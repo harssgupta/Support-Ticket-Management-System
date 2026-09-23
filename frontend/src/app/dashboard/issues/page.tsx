@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface Issue {
@@ -13,11 +14,12 @@ interface Issue {
 }
 
 export default function IssuesPage() {
+  const searchParams = useSearchParams();
   const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
   const [stateFilter, setStateFilter] = useState('');
   const [severityFilter, setSeverityFilter] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
 
   useEffect(() => {
     fetchIssues();

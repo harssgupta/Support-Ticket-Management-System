@@ -1,19 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { authHeaders } from '@/lib/api';
 
+interface UserOption {
+  userId: number;
+  loginName: string;
+  displayName: string;
+  accountType: string;
+}
+
 export default function CreateIssuePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState<UserOption[]>([]);
   const [formData, setFormData] = useState({
     subjectLine: '',
     problemDescription: '',
     severityLevel: 'MODERATE',
+    assignedToUserId: '',
   });
+
+  useEffect(() => {
+    fetch('http://localhost:8080/api/v1/users')
+      .then((res) => (res.ok ? res.json() : []))
+      .then(setUsers)
+      .catch(() => setUsers([]));
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -37,7 +53,10 @@ export default function CreateIssuePage() {
       const response = await fetch('http://localhost:8080/api/v1/issues', {
         method: 'POST',
         headers: authHeaders(),
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          assignedToUserId: formData.assignedToUserId ? Number(formData.assignedToUserId) : null,
+        }),
       });
 
       if (!response.ok) {
@@ -125,6 +144,27 @@ export default function CreateIssuePage() {
               <option value="MODERATE">🟡 Moderate - Significant impact</option>
               <option value="HIGH">🟠 High - Major impact</option>
               <option value="CRITICAL">🔴 Critical - System down or severe</option>
+            </select>
+          </div>
+
+          {/* Assignee */}
+          <div>
+            <label htmlFor="assignedToUserId" className="block text-sm font-semibold text-gray-700 mb-2">
+              Assign To
+            </label>
+            <select
+              id="assignedToUserId"
+              name="assignedToUserId"
+              value={formData.assignedToUserId}
+              onChange={handleChange}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            >
+              <option value="">Unassigned</option>
+              {users.map((user) => (
+                <option key={user.userId} value={user.userId}>
+                  {user.displayName} ({user.accountType.replace(/_/g, ' ')})
+                </option>
+              ))}
             </select>
           </div>
 

@@ -28,6 +28,13 @@ interface Message {
   parentMsgId: string | null;
 }
 
+interface UserOption {
+  userId: number;
+  loginName: string;
+  displayName: string;
+  accountType: string;
+}
+
 const STATE_TRANSITIONS: Record<string, string[]> = {
   NEWLY_OPENED: ['IN_WORK', 'WITHDRAWN'],
   IN_WORK: ['AWAITING_RESOLUTION', 'WITHDRAWN'],
@@ -48,10 +55,16 @@ export default function IssueDetailPage() {
   const [changingState, setChangingState] = useState(false);
   const [selectedState, setSelectedState] = useState('');
   const [assigning, setAssigning] = useState(false);
+  const [users, setUsers] = useState<UserOption[]>([]);
+  const [selectedAssignee, setSelectedAssignee] = useState('');
 
   useEffect(() => {
     fetchIssue();
     fetchMessages();
+    fetch('http://localhost:8080/api/v1/users')
+      .then((res) => (res.ok ? res.json() : []))
+      .then(setUsers)
+      .catch(() => setUsers([]));
   }, [issueId]);
 
   const fetchIssue = async () => {
@@ -107,7 +120,7 @@ export default function IssueDetailPage() {
     }
   };
 
-  const handleAssignToMe = async () => {
+  const handleAssign = async (targetUserId: number) => {
     if (!issue) return;
 
     setAssigning(true);
@@ -119,7 +132,7 @@ export default function IssueDetailPage() {
           subjectLine: issue.subjectLine,
           problemDescription: issue.problemDescription,
           severityLevel: issue.severityLevel,
-          assignedToUserId: Number(getUserId()),
+          assignedToUserId: targetUserId,
         }),
       });
 
@@ -128,7 +141,8 @@ export default function IssueDetailPage() {
         throw new Error(error?.message || 'Failed to assign issue');
       }
 
-      toast.success('Issue assigned to you');
+      toast.success('Issue assigned');
+      setSelectedAssignee('');
       fetchIssue();
     } catch (error: any) {
       toast.error(error.message || 'Failed to assign issue');
@@ -265,15 +279,39 @@ export default function IssueDetailPage() {
             <span className="ml-2 text-gray-900">
               {issue.assignedToName || 'Unassigned'}
             </span>
-            {!issue.assignedToName && (
-              <button
-                onClick={handleAssignToMe}
-                disabled={assigning}
-                className="ml-3 text-xs font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50"
-              >
-                {assigning ? 'Assigning...' : '+ Assign to me'}
-              </button>
-            )}
+            <button
+              onClick={() => handleAssign(Number(getUserId()))}
+              disabled={assigning}
+              className="ml-3 text-xs font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50"
+            >
+              {assigning ? 'Assigning...' : 'Assign to me'}
+            </button>
+          </div>
+        </div>
+
+        {/* Reassign to anyone */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <label className="block text-xs font-semibold text-gray-500 mb-2">Reassign to</label>
+          <div className="flex gap-3">
+            <select
+              value={selectedAssignee}
+              onChange={(e) => setSelectedAssignee(e.target.value)}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+            >
+              <option value="">Select a person...</option>
+              {users.map((user) => (
+                <option key={user.userId} value={user.userId}>
+                  {user.displayName} ({user.accountType.replace(/_/g, ' ')})
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => selectedAssignee && handleAssign(Number(selectedAssignee))}
+              disabled={!selectedAssignee || assigning}
+              className="bg-gray-800 hover:bg-gray-900 text-white font-medium py-2 px-5 rounded-lg disabled:opacity-50 transition-all text-sm"
+            >
+              Assign
+            </button>
           </div>
         </div>
 
