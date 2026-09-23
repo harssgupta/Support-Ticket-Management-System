@@ -118,7 +118,7 @@ class IssueManagementIntegrationTest {
     Issue issue = issueService.createNewIssue(
         "Test issue",
         "Test",
-        IssueSeverity.MEDIUM,
+        IssueSeverity.MODERATE,
         reporter,
         null
     );
@@ -164,7 +164,7 @@ class IssueManagementIntegrationTest {
   void testCountIssuesByState() {
     // Create multiple issues
     issueService.createNewIssue("Issue 1", "Desc 1", IssueSeverity.HIGH, reporter, null);
-    issueService.createNewIssue("Issue 2", "Desc 2", IssueSeverity.MEDIUM, reporter, null);
+    issueService.createNewIssue("Issue 2", "Desc 2", IssueSeverity.MODERATE, reporter, null);
     issueService.createNewIssue("Issue 3", "Desc 3", IssueSeverity.LOW, reporter, null);
 
     long openCount = issueService.countIssuesByState(IssueState.NEWLY_OPENED);
@@ -237,7 +237,7 @@ class IssueManagementIntegrationTest {
     Issue created = issueService.createNewIssue(
         "Test",
         "Test",
-        IssueSeverity.MEDIUM,
+        IssueSeverity.MODERATE,
         reporter,
         null
     );
