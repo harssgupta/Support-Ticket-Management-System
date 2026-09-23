@@ -13,7 +13,7 @@ public interface IssueMessageRepository extends JpaRepository<IssueMessage, Long
 
   Page<IssueMessage> findByIssue(Issue issue, Pageable pageable);
 
-  List<IssueMessage> findByParentMessageIsNull(Issue issue);
+  List<IssueMessage> findByIssueAndParentMessageIsNull(Issue issue);
 
   long countByIssue(Issue issue);
 }
