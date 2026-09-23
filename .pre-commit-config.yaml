@@ -1,0 +1,26 @@
+repos:
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks
+        name: Detect secrets with gitleaks
+        entry: gitleaks detect --verbose
+        language: golang
+        types: [text]
+        stages: [commit]
+
+  - repo: local
+    hooks:
+      - id: spotless-check
+        name: Format Java code (Spotless)
+        entry: bash -c 'cd backend && ./mvnw spotless:apply'
+        language: system
+        files: '(backend).*\.java$'
+        pass_filenames: false
+
+      - id: prettier-check
+        name: Format frontend code (Prettier)
+        entry: bash -c 'cd frontend && npx prettier --write .'
+        language: system
+        files: '(frontend).*\.(ts|tsx|js|jsx|json|md|css)$'
+        pass_filenames: false
