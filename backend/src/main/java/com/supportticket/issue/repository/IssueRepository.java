@@ -35,7 +35,8 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 
   @Query(
       "SELECT i FROM Issue i WHERE "
-          + "(LOWER(i.subjectLine) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR "
+          + "(:searchTerm IS NULL OR "
+          + "LOWER(i.subjectLine) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR "
           + "LOWER(i.problemDescription) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) "
           + "AND (:state IS NULL OR i.currentState = :state) "
           + "AND (:severity IS NULL OR i.severityLevel = :severity) "

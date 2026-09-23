@@ -41,16 +41,17 @@ export default function CreateIssuePage() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create issue');
+        const errorBody = await response.json().catch(() => null);
+        throw new Error(errorBody?.message || `Server returned ${response.status}`);
       }
 
       const result = await response.json();
       toast.success('Issue created successfully!');
       router.push('/dashboard/issues');
       router.refresh();
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error('Failed to create issue. Please check the backend.');
+    } catch (error: any) {
+      console.error('Error creating issue:', error);
+      toast.error(error.message || 'Failed to create issue. Please check the backend.');
     } finally {
       setLoading(false);
     }
