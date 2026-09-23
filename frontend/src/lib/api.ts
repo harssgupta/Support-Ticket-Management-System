@@ -1,6 +1,19 @@
 // API Configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
 
+// This app uses a simple X-User-ID header instead of JWT (no token-based auth was built).
+export function getUserId(): string {
+  if (typeof window === 'undefined') return '1';
+  return localStorage.getItem('user_id') || '1';
+}
+
+export function authHeaders(): HeadersInit {
+  return {
+    'Content-Type': 'application/json',
+    'X-User-ID': getUserId(),
+  };
+}
+
 export interface ApiResponse<T> {
   data: T;
   status: string;

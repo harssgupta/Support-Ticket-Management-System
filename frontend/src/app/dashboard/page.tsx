@@ -34,25 +34,24 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch issues from backend
-        const response = await fetch('http://localhost:8080/api/v1/issues?limit=5');
+        // Fetch issues from backend (Spring returns a Page wrapper: { content: [...] })
+        const response = await fetch('http://localhost:8080/api/v1/issues?size=100');
         if (response.ok) {
-          const data = await response.json();
-          setRecentIssues(Array.isArray(data) ? data : []);
+          const page = await response.json();
+          const data = Array.isArray(page) ? page : (page.content || []);
+          setRecentIssues(data.slice(0, 5));
 
           // Calculate stats from issues
-          if (Array.isArray(data)) {
-            const newlyOpened = data.filter((i: any) => i.currentState === 'NEWLY_OPENED').length;
-            const inWork = data.filter((i: any) => i.currentState === 'IN_WORK').length;
-            const awaiting = data.filter((i: any) => i.currentState === 'AWAITING_RESOLUTION').length;
+          const newlyOpened = data.filter((i: any) => i.currentState === 'NEWLY_OPENED').length;
+          const inWork = data.filter((i: any) => i.currentState === 'IN_WORK').length;
+          const awaiting = data.filter((i: any) => i.currentState === 'AWAITING_RESOLUTION').length;
 
-            setStats([
-              { label: 'Total Issues', count: data.length, icon: '🎫', color: 'from-blue-500 to-blue-600' },
-              { label: 'Newly Opened', count: newlyOpened, icon: '🆕', color: 'from-green-500 to-green-600' },
-              { label: 'In Work', count: inWork, icon: '⚙️', color: 'from-yellow-500 to-yellow-600' },
-              { label: 'Awaiting Resolution', count: awaiting, icon: '⏳', color: 'from-orange-500 to-orange-600' },
-            ]);
-          }
+          setStats([
+            { label: 'Total Issues', count: data.length, icon: '🎫', color: 'from-blue-500 to-blue-600' },
+            { label: 'Newly Opened', count: newlyOpened, icon: '🆕', color: 'from-green-500 to-green-600' },
+            { label: 'In Work', count: inWork, icon: '⚙️', color: 'from-yellow-500 to-yellow-600' },
+            { label: 'Awaiting Resolution', count: awaiting, icon: '⏳', color: 'from-orange-500 to-orange-600' },
+          ]);
         }
       } catch (error) {
         console.error('Failed to fetch dashboard data:', error);

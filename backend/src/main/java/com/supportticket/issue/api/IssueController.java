@@ -30,7 +30,7 @@ public class IssueController {
   @PostMapping
   public ResponseEntity<IssueResponse> createIssue(
       @RequestBody CreateIssueRequest request,
-      @RequestHeader("X-User-ID") Long userId
+      @RequestHeader(value = "X-User-ID", required = false, defaultValue = "1") Long userId
   ) {
     AccountHolder reporter = authService.getAccountById(userId);
     AccountHolder assignee = request.assignedToUserId() != null
@@ -59,7 +59,7 @@ public class IssueController {
   public ResponseEntity<IssueResponse> updateIssue(
       @PathVariable Long issueId,
       @RequestBody UpdateIssueRequest request,
-      @RequestHeader("X-User-ID") Long userId
+      @RequestHeader(value = "X-User-ID", required = false, defaultValue = "1") Long userId
   ) {
     AccountHolder assignee = request.assignedToUserId() != null
         ? authService.getAccountById(request.assignedToUserId())
@@ -80,7 +80,7 @@ public class IssueController {
   public ResponseEntity<IssueResponse> transitionIssueState(
       @PathVariable Long issueId,
       @RequestBody TransitionStateRequest request,
-      @RequestHeader("X-User-ID") Long userId
+      @RequestHeader(value = "X-User-ID", required = false, defaultValue = "1") Long userId
   ) {
     AccountHolder changedByUser = authService.getAccountById(userId);
 

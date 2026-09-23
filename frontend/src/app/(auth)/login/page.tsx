@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { api } from '@/lib/api';
 
 const loginSchema = z.object({
   loginName: z.string().min(1, 'Login name is required'),
@@ -41,10 +40,11 @@ export default function LoginPage() {
 
       const result = await response.json();
 
-      // Store token if returned
-      if (result.token) {
-        api.setToken(result.token);
-      }
+      // Store user info (no JWT in this app - using X-User-ID header auth)
+      localStorage.setItem('user_id', String(result.userId));
+      localStorage.setItem('user_name', result.displayName);
+      localStorage.setItem('user_login', result.loginName);
+      localStorage.setItem('user_role', result.accountType);
 
       toast.success('Login successful');
       router.push('/dashboard');
