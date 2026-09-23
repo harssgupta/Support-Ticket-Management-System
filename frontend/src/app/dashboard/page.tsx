@@ -17,6 +17,7 @@ interface Issue {
   subjectLine: string;
   currentState: string;
   severityLevel: string;
+  assignedToName: string | null;
   createdAt: string;
 }
 
@@ -151,19 +152,20 @@ export default function DashboardPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">Subject</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">Severity</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">Assigned To</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600">Created</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                     Loading issues...
                   </td>
                 </tr>
               ) : recentIssues.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                     <p className="text-lg">No issues yet</p>
                     <Link href="/dashboard/create-issue" className="text-blue-600 hover:text-blue-700 text-sm mt-2 block">
                       Create your first issue
@@ -191,6 +193,9 @@ export default function DashboardPage() {
                       <span className={`px-3 py-1 rounded-full text-xs font-medium ${getSeverityColor(issue.severityLevel)}`}>
                         {issue.severityLevel}
                       </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      {issue.assignedToName || <span className="text-gray-400">Unassigned</span>}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {formatDate(issue.createdAt)}

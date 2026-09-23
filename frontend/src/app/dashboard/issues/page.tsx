@@ -10,6 +10,7 @@ interface Issue {
   subjectLine: string;
   currentState: string;
   severityLevel: string;
+  assignedToName: string | null;
   createdAt: string;
 }
 
@@ -146,13 +147,14 @@ export default function IssuesPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Subject</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Severity</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Assigned To</th>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Created</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
                     <div className="flex items-center justify-center">
                       <svg className="animate-spin h-6 w-6 text-blue-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -164,7 +166,7 @@ export default function IssuesPage() {
                 </tr>
               ) : filteredIssues.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
                     <p className="text-lg mb-2">No issues found</p>
                     <Link href="/dashboard/create-issue" className="text-blue-600 hover:text-blue-700 font-medium">
                       Create your first issue →
@@ -199,6 +201,9 @@ export default function IssuesPage() {
                       <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getSeverityColor(issue.severityLevel)}`}>
                         {issue.severityLevel}
                       </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      {issue.assignedToName || <span className="text-gray-400">Unassigned</span>}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       {formatDate(issue.createdAt)}
