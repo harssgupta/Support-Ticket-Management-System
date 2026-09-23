@@ -15,12 +15,12 @@
 
 | Spec | What to Read | Size |
 |------|--------------|------|
-| **Requirements** | `specs/REQUIREMENTS.md` | What we're building |
-| **Architecture** | `specs/ARCHITECTURE.md` | How it's structured |
-| **Data Model** | `specs/DATA-MODEL.md` | Database schema + entities |
-| **API Contract** | `specs/API-CONTRACT.md` | REST endpoints with examples |
-| **UI Flow** | `specs/UI-FLOW.md` | User interface designs |
-| **Testing** | `specs/TEST-STRATEGY.md` | How to test everything |
+| **Requirements** | `spec/requirements.md` | What we're building |
+| **Architecture** | `spec/architecture.md` | How it's structured |
+| **Data Model** | `spec/data-model.md` | Database schema + entities |
+| **API Contract** | `spec/api-contract.md` | REST endpoints with examples |
+| **UI Flow** | `spec/ui-flow.md` | User interface designs |
+| **Testing** | `spec/test-strategy.md` | How to test everything |
 
 ## Common Commands
 
@@ -126,7 +126,7 @@ DELETE /tickets/{id}/comments/{cid}  # Delete comment
 GET    /users                    # List users
 GET    /users/{id}               # Get user
 
-# Full spec: specs/API-CONTRACT.md
+# Full spec: spec/api-contract.md
 ```
 
 ## Key Concepts
@@ -236,8 +236,8 @@ Before committing:
 | File | Purpose |
 |------|---------|
 | `CONSTITUTION.md` | The "constitution" — rules that must be followed |
-| `specs/REQUIREMENTS.md` | What we're building |
-| `specs/API-CONTRACT.md` | How the API looks |
+| `spec/requirements.md` | What we're building |
+| `spec/api-contract.md` | How the API looks |
 | `backend/pom.xml` | Maven dependencies |
 | `frontend/package.json` | npm dependencies |
 | `docker-compose.yml` | Local dev stack |
@@ -289,7 +289,7 @@ git commit -m "wip"
 
 ## Help! I'm Stuck
 
-1. **Find the relevant spec** — Check `specs/` directory
+1. **Find the relevant spec** — Check `spec/` directory
 2. **Check examples** — Look for existing implementation
 3. **Read the test** — Tests show how something should work
 4. **Ask questions** — Documentation should answer them
@@ -317,14 +317,14 @@ PostgreSQL (:5432)
 
 **Backend Developer**:
 - `CONSTITUTION.md` — Must follow rules
-- `specs/API-CONTRACT.md` — API to implement
-- `specs/DATA-MODEL.md` — Database schema
+- `spec/api-contract.md` — API to implement
+- `spec/data-model.md` — Database schema
 - `backend/pom.xml` — Dependencies
 
 **Frontend Developer**:
 - `CONSTITUTION.md` — Must follow rules
-- `specs/API-CONTRACT.md` — API to consume
-- `specs/UI-FLOW.md` — Pages & flows to build
+- `spec/api-contract.md` — API to consume
+- `spec/ui-flow.md` — Pages & flows to build
 - `frontend/package.json` — Dependencies
 
 **DevOps/Infrastructure**:

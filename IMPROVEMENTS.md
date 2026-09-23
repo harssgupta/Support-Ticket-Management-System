@@ -78,7 +78,7 @@ This is a **complete rewrite** (no copy-paste) of the ticketing management syste
 ```
 ├── backend/          # Monolithic structure
 ├── frontend/
-├── specs/           # Some documentation
+├── spec/           # Some documentation
 └── .specify/        # Some structure docs
 ```
 
@@ -88,7 +88,7 @@ This is a **complete rewrite** (no copy-paste) of the ticketing management syste
 ├── PLAN.md                      # Detailed roadmap
 ├── GETTING_STARTED.md           # Developer onboarding
 ├── IMPROVEMENTS.md              # This file
-├── specs/                       # Complete specifications
+├── spec/                       # Complete specifications
 │   ├── REQUIREMENTS.md
 │   ├── ARCHITECTURE.md
 │   ├── DATA-MODEL.md
@@ -177,7 +177,7 @@ This is a **complete rewrite** (no copy-paste) of the ticketing management syste
 
 ### Original
 - Good README with quick start
-- Specification documents exist (specs/001, specs/002)
+- Specification documents exist (spec/001, spec/002)
 - Some inline comments
 
 ### Improved
@@ -186,7 +186,7 @@ This is a **complete rewrite** (no copy-paste) of the ticketing management syste
 - **GETTING_STARTED.md** — Developer onboarding guide
 - **PLAN.md** — 6-week implementation roadmap
 - **IMPROVEMENTS.md** — This file
-- **specs/** — 6 comprehensive specification documents
+- **spec/** — 6 comprehensive specification documents
   - REQUIREMENTS.md
   - ARCHITECTURE.md
   - DATA-MODEL.md

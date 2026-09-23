@@ -418,9 +418,9 @@ DB_PASSWORD=yourpassword
 
 ## Quick Links
 
-- **Architecture Details**: See `specs/ARCHITECTURE.md`
+- **Architecture Details**: See `spec/architecture.md`
 - **Database Schema**: See `backend/src/main/resources/db/migration/`
-- **API Spec**: See `specs/API-CONTRACT.md`
+- **API Spec**: See `spec/api-contract.md`
 - **Testing**: See `backend/src/test/java/com/supportticket/issue/`
 - **Frontend Components**: See `frontend/src/app/`
 - **Implementation Plan**: See `PLAN.md`

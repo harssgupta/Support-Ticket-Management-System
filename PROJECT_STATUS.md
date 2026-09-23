@@ -76,7 +76,7 @@ backend/src/main/resources/db/migration/
 └── V005__init_search_index.sql
 ```
 
-Reference: See `specs/DATA-MODEL.md` for complete schema
+Reference: See `spec/data-model.md` for complete schema
 
 ---
 
@@ -96,7 +96,7 @@ Services needed:
 - `TicketHistoryService` — Immutable audit trail
 - `JwtTokenService` — Token generation & validation
 
-Reference: See `specs/API-CONTRACT.md` for all endpoints
+Reference: See `spec/api-contract.md` for all endpoints
 
 Tests needed:
 - Unit: State machine (16 transitions), service logic
@@ -119,7 +119,7 @@ Components needed:
 - `LoginForm` — Login form with validation
 - `ErrorDialog` — Display backend errors
 
-Reference: See `specs/UI-FLOW.md` for detailed wireframes
+Reference: See `spec/ui-flow.md` for detailed wireframes
 
 ---
 
@@ -138,7 +138,7 @@ Components needed:
 - `CommentList` — Comments section
 - `CommentForm` — Add comment
 
-Reference: See `specs/UI-FLOW.md` for designs + `specs/API-CONTRACT.md` for API calls
+Reference: See `spec/ui-flow.md` for designs + `spec/api-contract.md` for API calls
 
 ---
 
@@ -256,7 +256,7 @@ support-ticket-hub/
 ├── IMPROVEMENTS.md              ← Comparison with original
 ├── PROJECT_STATUS.md            ← This file
 
-├── specs/                       ← Specifications (6 detailed docs)
+├── spec/                       ← Specifications (6 detailed docs)
 │   ├── REQUIREMENTS.md          ← What to build
 │   ├── ARCHITECTURE.md          ← How it's structured
 │   ├── DATA-MODEL.md            ← Database schema
@@ -341,7 +341,7 @@ support-ticket-hub/
 ## Questions to Ask Yourself
 
 **Before starting each task:**
-1. "What does the spec say?" → Check `specs/`
+1. "What does the spec say?" → Check `spec/`
 2. "What are the tests?" → Check `TEST-STRATEGY.md`
 3. "What's the API contract?" → Check `API-CONTRACT.md`
 4. "Does this follow the constitution?" → Check `CONSTITUTION.md`
@@ -398,7 +398,7 @@ When this project is complete:
 1. ✅ Read `CONSTITUTION.md` — Understand non-negotiables
 2. ✅ Read `PLAN.md` — Understand roadmap
 3. ✅ Read `GETTING_STARTED.md` — Set up dev environment
-4. ✅ Review `specs/` — Understand requirements
+4. ✅ Review `spec/` — Understand requirements
 
 ### Then (Week 1)
 1. Start Milestone 1.1 (Database migrations)
@@ -420,12 +420,12 @@ When this project is complete:
 ## Contact & Support
 
 **Questions about**:
-- **Requirements** → Read `specs/REQUIREMENTS.md`
-- **Architecture** → Read `specs/ARCHITECTURE.md`
-- **Database** → Read `specs/DATA-MODEL.md`
-- **APIs** → Read `specs/API-CONTRACT.md`
-- **UI** → Read `specs/UI-FLOW.md`
-- **Testing** → Read `specs/TEST-STRATEGY.md`
+- **Requirements** → Read `spec/requirements.md`
+- **Architecture** → Read `spec/architecture.md`
+- **Database** → Read `spec/data-model.md`
+- **APIs** → Read `spec/api-contract.md`
+- **UI** → Read `spec/ui-flow.md`
+- **Testing** → Read `spec/test-strategy.md`
 - **Setup** → Read `GETTING_STARTED.md`
 - **Principles** → Read `CONSTITUTION.md`
 

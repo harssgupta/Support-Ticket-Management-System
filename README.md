@@ -97,17 +97,17 @@ Browser (Next.js 15) ──/api/* proxy──→ Spring Boot REST API ──→ 
 
 ## Documentation
 
-Detailed specifications in the `specs/` directory:
+Detailed specifications in the `spec/` directory:
 
 | Document | Purpose |
 |----------|---------|
 | `CONSTITUTION.md` | Project principles & governance |
-| `specs/REQUIREMENTS.md` | Functional & non-functional requirements |
-| `specs/ARCHITECTURE.md` | System design & component structure |
-| `specs/DATA-MODEL.md` | Entity definitions & relationships |
-| `specs/API-CONTRACT.md` | OpenAPI 3.0 REST endpoints |
-| `specs/UI-FLOW.md` | User interface flows & components |
-| `specs/TEST-STRATEGY.md` | Testing approach & QA gates |
+| `spec/requirements.md` | Functional & non-functional requirements |
+| `spec/architecture.md` | System design & component structure |
+| `spec/data-model.md` | Entity definitions & relationships |
+| `spec/api-contract.md` | OpenAPI 3.0 REST endpoints |
+| `spec/ui-flow.md` | User interface flows & components |
+| `spec/test-strategy.md` | Testing approach & QA gates |
 
 ---
 
@@ -329,7 +329,7 @@ MIT
 ## Support
 
 For questions or issues:
-1. Check the specification documents in `specs/`
+1. Check the specification documents in `spec/`
 2. Review existing issues/PRs
 3. Open a new issue with reproducible steps
 

@@ -87,7 +87,7 @@ support-ticket-hub/
 ├── README.md                    # Project overview
 ├── GETTING_STARTED.md           # This file
 │
-├── specs/                       # Specifications (source of truth)
+├── spec/                       # Specifications (source of truth)
 │   ├── REQUIREMENTS.md          # Functional & non-functional requirements
 │   ├── ARCHITECTURE.md          # System design & components
 │   ├── DATA-MODEL.md            # Database entities & relationships
@@ -471,11 +471,11 @@ See [PLAN.md](PLAN.md) for detailed implementation roadmap.
 
 ## Questions?
 
-1. **Architecture** → Read `specs/ARCHITECTURE.md`
-2. **API** → Read `specs/API-CONTRACT.md`
-3. **Database** → Read `specs/DATA-MODEL.md`
-4. **UI/UX** → Read `specs/UI-FLOW.md`
-5. **Testing** → Read `specs/TEST-STRATEGY.md`
+1. **Architecture** → Read `spec/architecture.md`
+2. **API** → Read `spec/api-contract.md`
+3. **Database** → Read `spec/data-model.md`
+4. **UI/UX** → Read `spec/ui-flow.md`
+5. **Testing** → Read `spec/test-strategy.md`
 6. **Governance** → Read `CONSTITUTION.md`
 
 ---
